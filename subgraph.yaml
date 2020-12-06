@@ -1,0 +1,39 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: UFragments
+    network: mainnet
+    source:
+      address: "0x68A118Ef45063051Eac49c7e647CE5Ace48a68a5"
+      abi: UFragments
+      startBlock: 10685457
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - LogRebase
+        - LogMonetaryPolicyUpdated
+        - OwnershipRenounced
+        - OwnershipTransferred
+        - Transfer
+        - Approval
+      abis:
+        - name: UFragments
+          file: ./abis/UFragments.json
+      eventHandlers:
+        - event: LogRebase(indexed uint256,uint256)
+          handler: handleLogRebase
+        - event: LogMonetaryPolicyUpdated(address)
+          handler: handleLogMonetaryPolicyUpdated
+        - event: OwnershipRenounced(indexed address)
+          handler: handleOwnershipRenounced
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/mapping.ts
